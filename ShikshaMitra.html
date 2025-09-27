@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiksha Mitra - Gamified Learning Platform (Frontend)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Glassmorphism body background */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Dark mode body background */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1f1b24 0%, #302b63 50%, #4a00e0 100%);
+        }
+
+        body.dark-mode::before {
+            background: radial-gradient(circle at 20% 80%, rgba(74, 0, 224, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(48, 43, 99, 0.3) 0%, transparent 50%);
+        }
+
+        /* Glassmorphism utility classes */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Navigation glassmorphism */
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Card glassmorphism */
+        .card-glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Button glassmorphism */
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-glass-primary {
+             background: rgba(129, 102, 235, 0.6);
+             border: 1px solid rgba(129, 102, 235, 0.8);
+        }
+        .btn-glass-primary:hover {
+            background: rgba(129, 102, 235, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* Modal glassmorphism */
+        .modal-glass {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        /* Input glassmorphism */
+        .input-glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .input-glass:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Progress bar glassmorphism */
+        .progress-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, rgba(74, 222, 128, 0.8), rgba(34, 197, 94, 0.8));
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill-games {
+             background: linear-gradient(90deg, #8166EB, #764ba2);
+             transition: width 0.5s ease;
+        }
+
+
+        /* Tab glassmorphism */
+        .tab-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tab-glass.active {
+            background: rgba(147, 51, 234, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card-hover {
+            transition: all 0.25s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-animation {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0)
+            }
+
+            40% {
+                transform: translateY(-10px)
+            }
+
+            60% {
+                transform: translateY(-5px)
+            }
+        }
+
+        .notification {
+            animation: slideIn 0.45s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1
+            }
+        }
+
+        .offline-indicator {
+            background: linear-gradient(45deg, #f59e0b, #d97706);
+        }
+        
+        /* Drag feedback for games */
+        .droppable { outline: 2px dashed rgba(255,255,255,0.15); outline-offset: 6px; transition: background .2s; }
+        .droppable.active { background: rgba(34,197,94,0.12); }
+
+
+        /* Dark mode utility classes */
+        body.dark-mode .text-white {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .text-gray-200 {
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .text-gray-300 {
+            color: #808080;
+        }
+
+        body.dark-mode .text-purple-300 {
+            color: #a872ff;
+        }
+
+        body.dark-mode .text-blue-200 {
+            color: #8a96ff;
+        }
+
+        body.dark-mode .text-green-300 {
+            color: #69b673;
+        }
+
+        body.dark-mode .text-yellow-300 {
+            color: #ffe68a;
+        }
+
+        /* Invert glassmorphism for dark mode */
+        body.dark-mode .glass,
+        body.dark-mode .glass-strong,
+        body.dark-mode .glass-dark,
+        body.dark-mode .nav-glass,
+        body.dark-mode .card-glass,
+        body.dark-mode .btn-glass,
+        body.dark-mode .input-glass,
+        body.dark-mode .modal-glass,
+        body.dark-mode .progress-glass,
+        body.dark-mode .tab-glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .modal-glass {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        body.dark-mode .btn-glass-primary {
+             background: rgba(100, 70, 210, 0.6);
+             border: 1px solid rgba(100, 70, 210, 0.8);
+        }
+        
+        body.dark-mode .btn-glass-primary:hover {
+            background: rgba(100, 70, 210, 0.8);
+        }
+
+
+        body.dark-mode .btn-glass:hover,
+        body.dark-mode .hover\:glass-strong {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        body.dark-mode .tab-glass.active {
+            background: rgba(100, 51, 234, 0.2);
+            /* A darker purple */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        body.dark-mode .progress-fill {
+            background: linear-gradient(90deg, #69b673, #3a8a44);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen text-white">
+    <nav class="nav-glass shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-bold">📚 Shiksha Mitra</div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="themeToggle"
+                        class="btn-glass px-3 py-1 rounded-lg text-sm transition-colors">
+                        ☀️ Light Mode
+                    </button>
+                    <select id="languageSelect" class="input-glass rounded-lg px-3 py-1 text-sm">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="od">ଓଡ଼ିଆ</option>
+                    </select>
+                    <div id="userInfo" class="hidden items-center space-x-2">
+                        <span id="userName" class="font-medium"></span>
+                        <button id="logoutBtn"
+                            class="btn-glass hover:glass-strong px-3 py-1 rounded-lg text-sm transition-colors">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="offlineIndicator" class="hidden offline-indicator text-white text-center py-2 text-sm">📱 Offline Mode
+        Active - Cached content available</div>
+
+    <div id="landingPage" class="min-h-screen">
+        <div class="py-20">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <h1 id="heroTitle" class="text-5xl font-bold mb-6">🎓 Welcome to Shiksha Mitra</h1>
+                <p id="heroSubtitle" class="text-xl mb-8 opacity-90">Gamified Learning Platform for Rural Education</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="loginBtn"
+                        class="btn-glass px-8 py-3 rounded-lg font-semibold hover:glass-strong transition-all">Login</button>
+                    <button id="signupBtn"
+                        class="btn-glass px-8 py-3 rounded-lg font-semibold hover:glass-strong transition-all">Sign
+                        Up</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="py-16">
+            <div class="max-w-7xl mx-auto px-4">
+                <h2 id="featuresHeading" class="text-3xl font-bold text-center mb-12">Platform Features</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 rounded-lg card-glass card-hover">
+                        <div class="text-4xl mb-4">🎮</div>
+                        <h3 class="text-xl font-semibold mb-2">Gamified Learning</h3>
+                        <p class="text-gray-200">Earn points, badges, and rewards while learning</p>
+                    </div>
+                    <div class="text-center p-6 rounded-lg card-glass card-hover">
+                        <div class="text-4xl mb-4">📱</div>
+                        <h3 class="text-xl font-semibold mb-2">Mobile Friendly</h3>
+                        <p class="text-gray-200">Optimized for low-data usage and offline access</p>
+                    </div>
+                    <div class="text-center p-6 rounded-lg card-glass card-hover">
+                        <div class="text-4xl mb-4">🌐</div>
+                        <h3 class="text-xl font-semibold mb-2">Multilingual</h3>
+                        <p class="text-gray-200">Available in English, Hindi, and Odia</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div class="modal-glass rounded-lg p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold mb-6 text-center">Login to Shiksha Mitra</h2>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="loginEmail"
+                        class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300"
+                        placeholder="Enter your email" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="loginPassword"
+                        class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300"
+                        placeholder="Enter your password" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-bold mb-2">Role</label>
+                    <select id="loginRole" class="input-glass w-full px-3 py-2 rounded-lg">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                    </select>
+                </div>
+                <button type="submit"
+                    class="btn-glass w-full py-2 rounded-lg font-semibold hover:glass-strong transition-all">Login</button>
+            </form>
+            <button id="closeLoginModal" class="mt-4 w-full text-gray-300 hover:text-white">Cancel</button>
+        </div>
+    </div>
+
+    <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div class="modal-glass rounded-lg p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold mb-6 text-center">Join Shiksha Mitra</h2>
+            <form id="signupForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2">Full Name</label>
+                    <input type="text" id="signupName"
+                        class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300"
+                        placeholder="Enter your name" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="signupEmail"
+                        class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300"
+                        placeholder="Enter your email" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="signupPassword"
+                        class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300"
+                        placeholder="Create a password" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-bold mb-2">Role</label>
+                    <select id="signupRole" class="input-glass w-full px-3 py-2 rounded-lg">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                    </select>
+                </div>
+                <button type="submit"
+                    class="btn-glass w-full py-2 rounded-lg font-semibold hover:glass-strong transition-all">Sign
+                    Up</button>
+            </form>
+            <button id="closeSignupModal" class="mt-4 w-full text-gray-300 hover:text-white">Cancel</button>
+        </div>
+    </div>
+
+    <div id="studentDashboard" class="hidden min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="glass-strong rounded-lg p-6 mb-8">
+                <h1 class="text-3xl font-bold mb-2">Welcome back, <span id="studentName"></span>! 🎉</h1>
+                <p class="opacity-90">Ready to continue your learning journey?</p>
+                <div class="mt-4 flex items-center space-x-4">
+                    <div class="glass rounded-lg px-4 py-2">
+                        <span class="text-sm opacity-75">Total Points</span>
+                        <div class="text-2xl font-bold" id="studentPoints">0</div>
+                    </div>
+                    <div class="glass rounded-lg px-4 py-2">
+                        <span class="text-sm opacity-75">Badges Earned</span>
+                        <div class="text-2xl font-bold" id="studentBadges">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-8">
+                <button class="student-tab tab-glass active px-4 py-2 rounded-lg font-medium"
+                    data-tab="lessons">📚 Lessons</button>
+                <button class="student-tab tab-glass px-4 py-2 rounded-lg font-medium" data-tab="games">🎮 Games</button>
+                <button class="student-tab tab-glass px-4 py-2 rounded-lg font-medium" data-tab="progress">📊
+                    Progress</button>
+                <button class="student-tab tab-glass px-4 py-2 rounded-lg font-medium"
+                    data-tab="leaderboard">🏆 Leaderboard</button>
+                <button class="student-tab tab-glass px-4 py-2 rounded-lg font-medium" data-tab="career">🎯
+                    Career Guide</button>
+                <button class="student-tab tab-glass px-4 py-2 rounded-lg font-medium" data-tab="profile">⚙️
+                    Profile</button>
+            </div>
+
+            <div id="lessonsTab" class="student-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="lessonsGrid">
+                </div>
+            </div>
+
+            <div id="gamesTab" class="student-content hidden">
+                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <aside class="lg:col-span-1 space-y-6">
+                        <section class="card-glass rounded-2xl p-5">
+                        <h2 class="font-bold text-lg">Game Stats</h2>
+                        <div class="mt-4 grid grid-cols-3 gap-3">
+                            <div class="glass rounded-xl p-3 text-center">
+                                <div class="text-green-300 font-extrabold text-xl" id="gamePoints">0</div>
+                                <div class="text-xs text-gray-200">Game Points</div>
+                            </div>
+                            <div class="glass rounded-xl p-3 text-center">
+                                <div class="text-yellow-300 font-extrabold text-xl" id="gameLevel">1</div>
+                                <div class="text-xs text-gray-200">Level</div>
+                            </div>
+                            <div class="glass rounded-xl p-3 text-center">
+                                <div class="text-purple-300 font-extrabold text-xl" id="gameStreak">0</div>
+                                <div class="text-xs text-gray-200">Streak</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-gray-200">Level progress</span>
+                            <span id="gameLevelProgressText" class="text-gray-300">0%</span>
+                            </div>
+                            <div class="h-2 rounded-full progress-glass overflow-hidden">
+                            <div id="gameLevelProgressBar" class="h-full w-0 progress-fill-games"></div>
+                            </div>
+                        </div>
+                        </section>
+
+                        <section class="card-glass rounded-2xl p-5">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-bold text-lg">Game Badges</h2>
+                            <span class="text-xs text-gray-300">Complete games to earn</span>
+                        </div>
+                        <div id="gameBadges" class="grid grid-cols-3 gap-3 mt-4">
+                            </div>
+                        </section>
+                    </aside>
+
+                    <section class="lg:col-span-3 space-y-6">
+                        <div id="game-cards" class="grid sm:grid-cols-2 gap-5">
+                            <div class="card-glass rounded-2xl overflow-hidden card-hover">
+                                <div class="p-5">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl glass flex items-center justify-center">
+                                        <span class="text-xl">➗</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Math Blitz</h3>
+                                        <p class="text-xs text-gray-300">Quick-fire questions</p>
+                                    </div>
+                                    </div>
+                                    <span class="text-xs px-2 py-1 rounded-lg glass">5 Qs</span>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="h-2 rounded-full progress-glass overflow-hidden">
+                                    <div id="mathProgress" class="h-full w-0 progress-fill-games"></div>
+                                    </div>
+                                    <div class="text-right text-xs text-gray-300 mt-1">Best Score: <span id="mathBest">0</span></div>
+                                </div>
+                                <div class="mt-4">
+                                    <button data-open="math" class="game-start-btn btn-glass btn-glass-primary text-white rounded-xl px-4 py-2 w-full">Play</button>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="card-glass rounded-2xl overflow-hidden card-hover">
+                                <div class="p-5">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl glass flex items-center justify-center">
+                                        <span class="text-xl">🧪</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Science Sort</h3>
+                                        <p class="text-xs text-gray-300">Drag & drop concepts</p>
+                                    </div>
+                                    </div>
+                                    <span class="text-xs px-2 py-1 rounded-lg glass">6 items</span>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="h-2 rounded-full progress-glass overflow-hidden">
+                                    <div id="scienceProgress" class="h-full w-0 progress-fill-games"></div>
+                                    </div>
+                                    <div class="text-right text-xs text-gray-300 mt-1">Best Score: <span id="scienceBest">0</span></div>
+                                </div>
+                                <div class="mt-4">
+                                    <button data-open="science" class="game-start-btn btn-glass btn-glass-primary text-white rounded-xl px-4 py-2 w-full">Play</button>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="card-glass rounded-2xl overflow-hidden card-hover">
+                                <div class="p-5">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl glass flex items-center justify-center">
+                                        <span class="text-xl">🔤</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Word Forge</h3>
+                                        <p class="text-xs text-gray-300">Unscramble the letters</p>
+                                    </div>
+                                    </div>
+                                    <span class="text-xs px-2 py-1 rounded-lg glass">3 rounds</span>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="h-2 rounded-full progress-glass overflow-hidden">
+                                    <div id="wordProgress" class="h-full w-0 progress-fill-games"></div>
+                                    </div>
+                                    <div class="text-right text-xs text-gray-300 mt-1">Best Score: <span id="wordBest">0</span></div>
+                                </div>
+                                <div class="mt-4">
+                                    <button data-open="words" class="game-start-btn btn-glass btn-glass-primary text-white rounded-xl px-4 py-2 w-full">Play</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="game-panels" class="space-y-6">
+                        <div id="panel-math" class="card-glass rounded-2xl p-6 hidden">
+                            <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold flex items-center gap-2">➗ Math Blitz</h3>
+                                <p class="text-gray-200">Pick the correct answer before time runs out.</p>
+                            </div>
+                            <button class="game-close-panel btn-glass rounded-lg px-3 py-2" data-close="math">Close</button>
+                            </div>
+                            <div class="mt-4 grid md:grid-cols-3 gap-4">
+                            <div class="glass rounded-xl p-4">
+                                <div class="text-sm text-gray-200">Timer</div>
+                                <div id="mathTimer" class="text-2xl font-extrabold">30</div>
+                            </div>
+                            <div class="glass rounded-xl p-4">
+                                <div class="text-sm text-gray-200">Score</div>
+                                <div id="mathScore" class="text-2xl font-extrabold">0</div>
+                            </div>
+                            <div class="glass rounded-xl p-4">
+                                <div class="text-sm text-gray-200">Question</div>
+                                <div id="mathQIndex" class="text-2xl font-extrabold">1/5</div>
+                            </div>
+                            </div>
+                            <div class="mt-5 glass rounded-xl p-5">
+                            <div id="mathQuestion" class="text-xl font-semibold">Press Start to begin</div>
+                            <div id="mathChoices" class="grid grid-cols-2 gap-3 mt-4"></div>
+                            <div class="mt-4 flex items-center gap-3">
+                                <button id="mathStart" class="btn-glass btn-glass-primary text-white rounded-xl px-4 py-2">Start</button>
+                                <div id="mathFeedback" class="text-sm"></div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div id="panel-science" class="card-glass rounded-2xl p-6 hidden">
+                            <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold flex items-center gap-2">🧪 Science Sort</h3>
+                                <p class="text-gray-200">Drag each item into Solid, Liquid, or Gas.</p>
+                            </div>
+                            <button class="game-close-panel btn-glass rounded-lg px-3 py-2" data-close="science">Close</button>
+                            </div>
+                            <div class="mt-5 grid md:grid-cols-3 gap-4">
+                            <div class="md:col-span-1">
+                                <div class="glass rounded-xl p-4">
+                                <div class="text-sm text-gray-200">Items</div>
+                                <div id="scienceItems" class="flex flex-wrap gap-2 mt-2"></div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-2 grid sm:grid-cols-3 gap-3">
+                                <div class="droppable rounded-xl p-4 glass" data-bucket="Solid">
+                                <div class="font-semibold">🧱 Solid</div>
+                                <div class="mt-2 min-h-[80px]" data-dropzone="Solid"></div>
+                                </div>
+                                <div class="droppable rounded-xl p-4 glass" data-bucket="Liquid">
+                                <div class="font-semibold">💧 Liquid</div>
+                                <div class="mt-2 min-h-[80px]" data-dropzone="Liquid"></div>
+                                </div>
+                                <div class="droppable rounded-xl p-4 glass" data-bucket="Gas">
+                                <div class="font-semibold">🌬️ Gas</div>
+                                <div class="mt-2 min-h-[80px]" data-dropzone="Gas"></div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="mt-4 flex items-center gap-3">
+                            <button id="scienceCheck" class="btn-glass btn-glass-primary text-white rounded-xl px-4 py-2">Check</button>
+                            <button id="scienceReset" class="btn-glass rounded-xl px-4 py-2">Reset</button>
+                            <div id="scienceFeedback" class="text-sm"></div>
+                            </div>
+                        </div>
+
+                        <div id="panel-words" class="card-glass rounded-2xl p-6 hidden">
+                            <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold flex items-center gap-2">🔤 Word Forge</h3>
+                                <p class="text-gray-200">Tap letters to form the correct word.</p>
+                            </div>
+                            <button class="game-close-panel btn-glass rounded-lg px-3 py-2" data-close="words">Close</button>
+                            </div>
+                            <div class="mt-4 grid md:grid-cols-3 gap-4">
+                            <div class="glass rounded-xl p-4">
+                                <div class="text-sm text-gray-200">Round</div>
+                                <div id="wordRound" class="text-2xl font-extrabold">1/3</div>
+                            </div>
+                            <div class="glass rounded-xl p-4">
+                                <div class="text-sm text-gray-200">Score</div>
+                                <div id="wordScore" class="text-2xl font-extrabold">0</div>
+                            </div>
+                            <div class="glass rounded-xl p-4">
+                                <div class="text-sm text-gray-200">Hint</div>
+                                <div id="wordHint" class="text-sm text-gray-100">—</div>
+                            </div>
+                            </div>
+                            <div class="mt-5 glass rounded-xl p-5">
+                            <div id="wordTarget" class="text-xl font-semibold tracking-widest text-center">_ _ _ _</div>
+                            <div id="wordLetters" class="flex flex-wrap gap-2 mt-4 justify-center"></div>
+                            <div class="mt-4 flex items-center gap-3">
+                                <button id="wordSubmit" class="btn-glass btn-glass-primary text-white rounded-xl px-4 py-2">Submit</button>
+                                <button id="wordShuffle" class="btn-glass rounded-xl px-4 py-2">Shuffle</button>
+                                <button id="wordClear" class="btn-glass rounded-xl px-4 py-2">Clear</button>
+                                <div id="wordFeedback" class="text-sm"></div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div id="progressTab" class="student-content hidden">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Learning Progress</h3>
+                        <div class="space-y-4" id="progressList">
+                        </div>
+                    </div>
+
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Achievements 🏆</h3>
+                        <div class="grid grid-cols-3 gap-4" id="achievementsGrid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="leaderboardTab" class="student-content hidden">
+                <div class="card-glass rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4">Class Leaderboard 🏆</h3>
+                    <div class="space-y-3" id="leaderboardList">
+                    </div>
+                </div>
+            </div>
+
+            <div id="careerTab" class="student-content hidden">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-glass rounded-lg shadow-md p-6 card-hover">
+                        <div class="text-4xl mb-4">👨‍⚕️</div>
+                        <h3 class="text-xl font-semibold mb-2">Healthcare</h3>
+                        <p class="text-gray-200 mb-4">Doctors, nurses, and medical professionals</p>
+                        <button class="text-purple-300 font-medium hover:text-purple-100">Learn More →</button>
+                    </div>
+                    <div class="card-glass rounded-lg shadow-md p-6 card-hover">
+                        <div class="text-4xl mb-4">👨‍💻</div>
+                        <h3 class="text-xl font-semibold mb-2">Technology</h3>
+                        <p class="text-gray-200 mb-4">Software development and IT careers</p>
+                        <button class="text-purple-300 font-medium hover:text-purple-100">Learn More →</button>
+                    </div>
+                    <div class="card-glass rounded-lg shadow-md p-6 card-hover">
+                        <div class="text-4xl mb-4">👨‍🏫</div>
+                        <h3 class="text-xl font-semibold mb-2">Education</h3>
+                        <p class="text-gray-200 mb-4">Teaching and educational leadership</p>
+                        <button class="text-purple-300 font-medium hover:text-purple-100">Learn More →</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profileTab" class="student-content hidden">
+                <div class="card-glass rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4">Profile Settings</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Display Name</label>
+                            <input type="text" id="profileName"
+                                class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Preferred Language</label>
+                            <select id="profileLanguage" class="input-glass w-full px-3 py-2 rounded-lg">
+                                <option value="en">English</option>
+                                <option value="hi">हिंदी</option>
+                                <option value="od">ଓଡ଼ିଆ</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="lowDataMode" class="mr-2">
+                            <label for="lowDataMode" class="text-sm">Enable Low Data Mode</label>
+                        </div>
+                        <button id="saveProfileBtn"
+                            class="btn-glass px-6 py-2 rounded-lg font-medium hover:glass-strong transition-all">Save
+                            Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="teacherDashboard" class="hidden min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="glass-strong rounded-lg p-6 mb-8">
+                <h1 class="text-3xl font-bold mb-2">Welcome, <span id="teacherName"></span>! 👩‍🏫</h1>
+                <p class="opacity-90">Manage your classes and track student progress</p>
+                <div class="mt-4 flex items-center space-x-4">
+                    <div class="glass rounded-lg px-4 py-2">
+                        <span class="text-sm opacity-75">Total Students</span>
+                        <div class="text-2xl font-bold" id="totalStudents">0</div>
+                    </div>
+                    <div class="glass rounded-lg px-4 py-2">
+                        <span class="text-sm opacity-75">Active Classes</span>
+                        <div class="text-2xl font-bold" id="activeClasses">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-8">
+                <button class="teacher-tab tab-glass active px-4 py-2 rounded-lg font-medium"
+                    data-tab="overview">📊 Overview</button>
+                <button class="teacher-tab tab-glass px-4 py-2 rounded-lg font-medium" data-tab="students">👥
+                    Students</button>
+                <button class="teacher-tab tab-glass px-4 py-2 rounded-lg font-medium" data-tab="lessons">📚
+                    Lessons</button>
+                <button class="teacher-tab tab-glass px-4 py-2 rounded-lg font-medium"
+                    data-tab="analytics">📈 Analytics</button>
+                <button class="teacher-tab tab-glass px-4 py-2 rounded-lg font-medium" data-tab="settings">⚙️
+                    Settings</button>
+            </div>
+
+            <div id="overviewTab" class="teacher-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-200 text-sm">Avg. Completion</p>
+                                <p class="text-2xl font-bold text-green-300" id="avgCompletion">0%</p>
+                            </div>
+                            <div class="text-3xl">📈</div>
+                        </div>
+                    </div>
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-200 text-sm">Active Today</p>
+                                <p class="text-2xl font-bold text-blue-300" id="activeToday">0</p>
+                            </div>
+                            <div class="text-3xl">👥</div>
+                        </div>
+                    </div>
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-200 text-sm">Avg. Score</p>
+                                <p class="text-2xl font-bold text-purple-300" id="avgScore">0%</p>
+                            </div>
+                            <div class="text-3xl">🎯</div>
+                        </div>
+                    </div>
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-200 text-sm">Badges Earned</p>
+                                <p class="text-2xl font-bold text-yellow-300" id="totalBadges">0</p>
+                            </div>
+                            <div class="text-3xl">🏆</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Recent Activity</h3>
+                        <div class="space-y-3" id="recentActivity">
+                        </div>
+                    </div>
+
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button id="createLessonBtn"
+                                class="w-full text-left p-3 glass hover:glass-strong rounded-lg transition-all">
+                                <div class="font-medium">📝 Create New Lesson</div>
+                                <div class="text-sm text-gray-200">Add a new lesson or quiz</div>
+                            </button>
+                            <button id="manageStudentsBtn"
+                                class="w-full text-left p-3 glass hover:glass-strong rounded-lg transition-all">
+                                <div class="font-medium">👥 Manage Classes</div>
+                                <div class="text-sm text-gray-200">Add or remove students</div>
+                            </button>
+                            <button id="viewReportsBtn"
+                                class="w-full text-left p-3 glass hover:glass-strong rounded-lg transition-all">
+                                <div class="font-medium">📊 View Reports</div>
+                                <div class="text-sm text-gray-200">Detailed analytics</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="studentsTab" class="teacher-content hidden">
+                <div class="card-glass rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold">Student Management</h3>
+                        <button id="addStudentBtn"
+                            class="btn-glass px-4 py-2 rounded-lg font-medium hover:glass-strong transition-all">+
+                            Add Student</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-white border-opacity-20">
+                                    <th class="text-left py-3 px-4">Student</th>
+                                    <th class="text-left py-3 px-4">Progress</th>
+                                    <th class="text-left py-3 px-4">Last Active</th>
+                                    <th class="text-left py-3 px-4">Points</th>
+                                    <th class="text-left py-3 px-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="lessonsTabTeacher" class="teacher-content hidden">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Create New Lesson</h3>
+                        <form id="createLessonForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Lesson Title</label>
+                                <input type="text" id="newLessonTitle"
+                                    class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300"
+                                    placeholder="Enter lesson title" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Subject</label>
+                                <select id="newLessonSubject"
+                                    class="input-glass w-full px-3 py-2 rounded-lg">
+                                    <option>Mathematics</option>
+                                    <option>Science</option>
+                                    <option>Language Arts</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Difficulty Level</label>
+                                <select id="newLessonLevel" class="input-glass w-full px-3 py-2 rounded-lg">
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Add a quiz question
+                                    (optional)</label>
+                                <input type="text" id="newLessonQ"
+                                    class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300"
+                                    placeholder="Question text">
+                                <input type="text" id="newLessonOptions"
+                                    class="input-glass w-full mt-2 px-3 py-2 rounded-lg placeholder-gray-300"
+                                    placeholder="Comma separated options">
+                                <input type="number" id="newLessonCorrectIndex"
+                                    class="input-glass w-full mt-2 px-3 py-2 rounded-lg placeholder-gray-300"
+                                    placeholder="Correct option index (0-based)">
+                                <input type="number" id="newLessonPoints"
+                                    class="input-glass w-full mt-2 px-3 py-2 rounded-lg placeholder-gray-300"
+                                    placeholder="Points for question" min="0">
+                            </div>
+                            <button type="submit"
+                                class="btn-glass w-full py-2 rounded-lg font-medium hover:glass-strong transition-all">Create
+                                Lesson</button>
+                        </form>
+                    </div>
+
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Recent Lessons</h3>
+                        <div class="space-y-3" id="recentLessonsList">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="analyticsTab" class="teacher-content hidden">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Performance Trends</h3>
+                        <div class="space-y-4" id="perfTrends">
+                        </div>
+                    </div>
+
+                    <div class="card-glass rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Subject Performance</h3>
+                        <div class="space-y-3" id="subjectPerf">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settingsTabTeacher" class="teacher-content hidden">
+                <div class="card-glass rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4">Teacher Settings</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Display Name</label>
+                            <input type="text" id="teacherProfileName"
+                                class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">School/Institution</label>
+                            <input type="text" id="teacherSchool"
+                                class="input-glass w-full px-3 py-2 rounded-lg placeholder-gray-300"
+                                placeholder="Enter school name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Notification Preferences</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center"><input type="checkbox" class="mr-2"
+                                        id="notifyCompletion" checked><span class="text-sm">Student
+                                        completion notifications</span></label>
+                                <label class="flex items-center"><input type="checkbox" class="mr-2" id="notifyWeekly"
+                                        checked><span class="text-sm">Weekly progress
+                                        reports</span></label>
+                                <label class="flex items-center"><input type="checkbox" class="mr-2"
+                                        id="notifyFeatures"><span class="text-sm">New feature
+                                        announcements</span></label>
+                            </div>
+                        </div>
+                        <button id="saveTeacherSettings"
+                            class="btn-glass px-6 py-2 rounded-lg font-medium hover:glass-strong transition-all">Save
+                            Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lessonModal" class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div class="modal-glass rounded-lg p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="lessonTitle" class="text-2xl font-bold">Lesson Title</h2>
+                <button id="closeLessonModal" class="text-gray-300 hover:text-white text-2xl">&times;</button>
+            </div>
+
+            <div id="lessonContent" class="">
+            </div>
+
+            <div class="mt-6 flex justify-between">
+                <button id="prevQuestion"
+                    class="btn-glass px-4 py-2 rounded-lg font-medium hover:glass-strong transition-all">Previous</button>
+                <button id="nextQuestion"
+                    class="btn-glass px-4 py-2 rounded-lg font-medium hover:glass-strong transition-all">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification"
+        class="hidden fixed top-20 right-4 glass-strong px-6 py-3 rounded-lg shadow-lg notification z-50">
+        <span id="notificationText">Notification message</span>
+    </div>
+
+
+    <script>
+        // --- App state ---
+        let currentUser = null;
+        let currentLesson = null;
+        let currentQuestionIndex = 0;
+        let userProgress = {}; // { email: { points, badges, completedLessons: [], lastActive, games: {gameState} }}
+        let lessons = {};
+        let isOffline = false;
+        
+        // --- Default game state ---
+        const defaultGameState = {
+            points: 0,
+            best: { math: 0, science: 0, words: 0 },
+            badges: { math: false, science: false, words: false },
+            completed: { math: false, science: false, words: false },
+            streak: 0,
+            lastPlayDate: null
+        };
+
+
+        // --- Translation (very small example) ---
+        const translations = {
+            en: {
+                welcome: 'Welcome to Shiksha Mitra',
+                login: 'Login',
+                signup: 'Sign Up'
+            },
+            hi: {
+                welcome: 'शिक्षा मित्र में आपका स्वागत है',
+                login: 'लॉगिन',
+                signup: 'साइन अप'
+            },
+            od: {
+                welcome: 'ଶିକ୍ଷା ମିତ୍ରକୁ ସ୍ୱାଗତ',
+                login: 'ଲଗଇନ',
+                signup: 'ସାଇନ୍ ଅପ୍'
+            }
+        };
+
+        // --- Helpers for localStorage ---
+        function loadFromStorage() {
+            const u = localStorage.getItem('sh_users');
+            const p = localStorage.getItem('sh_progress');
+            const l = localStorage.getItem('sh_lessons');
+            if (u) users = JSON.parse(u);
+            else users = {}; // users[email] = {name,email,role,password}
+            if (p) userProgress = JSON.parse(p);
+            else userProgress = {};
+            if (l) lessons = JSON.parse(l);
+            else lessons = getDefaultLessons();
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('sh_users', JSON.stringify(users));
+            localStorage.setItem('sh_progress', JSON.stringify(userProgress));
+            localStorage.setItem('sh_lessons', JSON.stringify(lessons));
+        }
+
+        // default sample lessons
+        function getDefaultLessons() {
+            return {
+                math: {
+                    title: 'Mathematics - Basic Addition',
+                    subject: 'Mathematics',
+                    level: 'Beginner',
+                    questions: [{
+                        type: 'quiz',
+                        question: 'What is 5 + 3?',
+                        options: ['6', '7', '8', '9'],
+                        correct: 2,
+                        points: 10
+                    }, {
+                        type: 'quiz',
+                        question: 'What is 12 + 7?',
+                        options: ['18', '19', '20', '21'],
+                        correct: 1,
+                        points: 10
+                    }, {
+                        type: 'story',
+                        content: "🎉 Great job! You've mastered basic addition.",
+                        points: 5
+                    }]
+                },
+                science: {
+                    title: 'Science - Plant Life Cycle',
+                    subject: 'Science',
+                    level: 'Intermediate',
+                    questions: [{
+                        type: 'quiz',
+                        question: 'What do plants need to grow?',
+                        options: ['Water only', 'Sunlight only', 'Water, sunlight, and soil', 'Nothing'],
+                        correct: 2,
+                        points: 10
+                    }, {
+                        type: 'story',
+                        content: '🌱 Plants are amazing!',
+                        points: 5
+                    }]
+                },
+                language: {
+                    title: 'Language Arts - Story Writing',
+                    subject: 'Language Arts',
+                    level: 'Advanced',
+                    questions: [{
+                        type: 'quiz',
+                        question: 'What makes a good story?',
+                        options: ['Only characters', 'Only plot', 'Characters, plot, and setting', 'Only setting'],
+                        correct: 2,
+                        points: 10
+                    }, {
+                        type: 'story',
+                        content: '📚 Stories are magical!',
+                        points: 5
+                    }]
+                }
+            };
+        }
+
+        // initialize users object
+        let users = {};
+        loadFromStorage();
+
+        // If no users yet, create a demo teacher and student for easier testing
+        if (!Object.keys(users).length) {
+            users['teacher@example.com'] = {
+                name: 'Teacher One',
+                email: 'teacher@example.com',
+                role: 'teacher',
+                password: 'teacher'
+            };
+            users['student@example.com'] = {
+                name: 'Student One',
+                email: 'student@example.com',
+                role: 'student',
+                password: 'student'
+            };
+            userProgress['student@example.com'] = {
+                points: 120,
+                badges: 2,
+                completedLessons: ['math'],
+                lastActive: new Date().toISOString(),
+                games: { ...defaultGameState, points: 50 } // Give demo student some game points
+            };
+            saveToStorage();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeApp();
+            setupEventListeners();
+            checkOfflineStatus();
+            renderAll();
+            initializeTheme();
+        });
+
+        function initializeApp() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard(currentUser.role);
+                updateUserInfo();
+            } else showLandingPage();
+        }
+
+        // --- UI setup ---
+        function setupEventListeners() {
+            document.getElementById('loginBtn').addEventListener('click', () => showModal('loginModal'));
+            document.getElementById('signupBtn').addEventListener('click', () => showModal('signupModal'));
+            document.getElementById('closeLoginModal').addEventListener('click', () => hideModal('loginModal'));
+            document.getElementById('closeSignupModal').addEventListener('click', () => hideModal('signupModal'));
+            document.getElementById('closeLessonModal').addEventListener('click', () => hideModal('lessonModal'));
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('signupForm').addEventListener('submit', handleSignup);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            document.querySelectorAll('.student-tab').forEach(tab => tab.addEventListener('click', (e) => switchStudentTab(e.currentTarget.dataset.tab)));
+            document.querySelectorAll('.teacher-tab').forEach(tab => tab.addEventListener('click', (e) => switchTeacherTab(e.currentTarget.dataset.tab)));
+            document.getElementById('nextQuestion').addEventListener('click', nextQuestion);
+            document.getElementById('prevQuestion').addEventListener('click', prevQuestion);
+            document.getElementById('languageSelect').addEventListener('change', changeLanguage);
+            window.addEventListener('online', () => updateOfflineStatus(false));
+            window.addEventListener('offline', () => updateOfflineStatus(true));
+
+            // teacher actions
+            document.getElementById('createLessonBtn').addEventListener('click', () => switchTeacherTab('lessons'));
+            document.getElementById('addStudentBtn').addEventListener('click', () => showAddStudentPrompt());
+            document.getElementById('manageStudentsBtn').addEventListener('click', () => switchTeacherTab('students'));
+            document.getElementById('createLessonForm').addEventListener('submit', handleCreateLesson);
+            document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
+            document.getElementById('saveTeacherSettings').addEventListener('click', saveTeacherSettings);
+            document.getElementById('themeToggle').addEventListener('click', () => setTheme(!document.body.classList.contains('dark-mode')));
+        }
+
+        function showModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function hideModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showLandingPage() {
+            document.getElementById('landingPage').classList.remove('hidden');
+            document.getElementById('studentDashboard').classList.add('hidden');
+            document.getElementById('teacherDashboard').classList.add('hidden');
+            document.getElementById('userInfo').classList.add('hidden');
+        }
+
+        function showDashboard(role) {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('userInfo').classList.remove('hidden');
+            if (role === 'student') {
+                document.getElementById('studentDashboard').classList.remove('hidden');
+                document.getElementById('teacherDashboard').classList.add('hidden');
+                updateStudentDashboard();
+                initializeGames(); // Initialize games when student dashboard is shown
+            } else {
+                document.getElementById('teacherDashboard').classList.remove('hidden');
+                document.getElementById('studentDashboard').classList.add('hidden');
+                updateTeacherDashboard();
+            }
+        }
+
+        // --- Auth (local only) ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
+            if (!email || !password) return showNotification('Please fill email and password');
+            if (!users[email]) return showNotification('User not found. Please sign up.');
+            if (users[email].password !== password) return showNotification('Wrong password');
+            if (users[email].role !== role) return showNotification('Role mismatch');
+            
+            // Initialize progress if it doesn't exist
+            if (!userProgress[email]) {
+                 userProgress[email] = { points: 0, badges: 0, completedLessons: [], lastActive: new Date().toISOString(), games: { ...defaultGameState }};
+            } else if (!userProgress[email].games) {
+                 userProgress[email].games = { ...defaultGameState };
+            }
+
+            currentUser = {
+                name: users[email].name,
+                email: email,
+                role: role
+            };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            hideModal('loginModal');
+            showDashboard(role);
+            updateUserInfo();
+            showNotification('Welcome back! 🎉');
+            renderAll();
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+            const password = document.getElementById('signupPassword').value;
+            const role = document.getElementById('signupRole').value;
+            if (!name || !email || !password) return showNotification('Please fill all fields');
+            if (users[email]) return showNotification('Email already registered. Please login.');
+            users[email] = { name, email, role, password };
+            
+            if (!userProgress[email]) {
+                userProgress[email] = {
+                    points: 0, badges: 0, completedLessons: [], lastActive: new Date().toISOString(),
+                    games: { ...defaultGameState } // Add game state for new users
+                };
+            }
+            saveToStorage();
+            currentUser = { name, email, role };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            hideModal('signupModal');
+            showDashboard(role);
+            updateUserInfo();
+            showNotification('Account created successfully! 🎉');
+            renderAll();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showLandingPage();
+            showNotification('Logged out successfully!');
+        }
+
+        function updateUserInfo() {
+            if (currentUser && userProgress[currentUser.email]) {
+                const progress = userProgress[currentUser.email];
+                document.getElementById('userName').textContent = currentUser.name;
+                if (currentUser.role === 'student') {
+                    document.getElementById('studentName').textContent = currentUser.name;
+                    document.getElementById('studentPoints').textContent = progress.points || 0;
+                    document.getElementById('studentBadges').textContent = progress.badges || 0;
+                } else {
+                    document.getElementById('teacherName').textContent = currentUser.name;
+                }
+            }
+        }
+
+        function updateStudentDashboard() {
+            document.getElementById('profileName').value = currentUser.name || '';
+            document.getElementById('profileLanguage').value = localStorage.getItem('sh_lang') || 'en';
+            document.getElementById('lowDataMode').checked = localStorage.getItem('sh_lowdata') === '1';
+        }
+
+        function updateTeacherDashboard() {
+            document.getElementById('teacherProfileName').value = currentUser?.name || '';
+            document.getElementById('teacherSchool').value = localStorage.getItem('sh_teacher_school') || '';
+        }
+
+        function switchStudentTab(tabName) {
+            document.querySelectorAll('.student-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.querySelectorAll('.student-content').forEach(content => content.classList.add('hidden'));
+            const contentMap = {
+                'lessons': 'lessonsTab',
+                'games': 'gamesTab',
+                'progress': 'progressTab',
+                'leaderboard': 'leaderboardTab',
+                'career': 'careerTab',
+                'profile': 'profileTab'
+            };
+            document.getElementById(contentMap[tabName]).classList.remove('hidden');
+            renderAll();
+        }
+
+        function switchTeacherTab(tabName) {
+            document.querySelectorAll('.teacher-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.querySelectorAll('.teacher-content').forEach(content => content.classList.add('hidden'));
+            const contentMap = {
+                'overview': 'overviewTab',
+                'students': 'studentsTab',
+                'lessons': 'lessonsTabTeacher',
+                'analytics': 'analyticsTab',
+                'settings': 'settingsTabTeacher'
+            };
+            document.getElementById(contentMap[tabName]).classList.remove('hidden');
+            renderAll();
+        }
+
+        // --- Lessons flow (student) ---
+        function openLesson(lessonKey) {
+            if (!currentUser || currentUser.role !== 'student') return showNotification('Please login as student to open lessons');
+            currentLesson = lessons[lessonKey];
+            currentQuestionIndex = 0;
+            document.getElementById('lessonTitle').textContent = currentLesson.title;
+            showModal('lessonModal');
+            displayCurrentQuestion();
+        }
+
+        function displayCurrentQuestion() {
+            if (!currentLesson) return;
+            const question = currentLesson.questions[currentQuestionIndex];
+            const content = document.getElementById('lessonContent');
+            if (question.type === 'quiz') {
+                content.innerHTML = `<div class="mb-6"><h3 class="text-lg font-semibold mb-4">${question.question}</h3><div class="space-y-2">${question.options.map((opt, i) => `<button class="quiz-option w-full text-left p-3 glass hover:glass-strong rounded-lg transition-all" data-index="${i}">${opt}</button>`).join('')}</div></div>`;
+                document.querySelectorAll('.quiz-option').forEach(option => option.addEventListener('click', (e) => selectQuizOption(e.currentTarget, question)));
+            } else if (question.type === 'story') {
+                content.innerHTML = `<div class="text-center py-8"><div class="text-6xl mb-4">📚</div><div class="text-lg leading-relaxed">${question.content}</div><div class="mt-6 text-green-300 font-semibold">+${question.points} points earned!</div></div>`;
+                awardPoints(question.points);
+            }
+            document.getElementById('prevQuestion').style.display = currentQuestionIndex > 0 ? 'block' : 'none';
+            document.getElementById('nextQuestion').textContent = currentQuestionIndex < currentLesson.questions.length - 1 ? 'Next' : 'Complete';
+        }
+
+        function selectQuizOption(selectedElement, question) {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.disabled = true;
+                option.classList.remove('bg-green-500/20', 'bg-red-500/20', 'border-green-500', 'border-red-500');
+            });
+            const selectedIndex = parseInt(selectedElement.dataset.index);
+            if (selectedIndex === question.correct) {
+                selectedElement.classList.add('bg-green-500/20', 'border-green-500');
+                awardPoints(question.points);
+                showNotification(`Correct! +${question.points} points 🎉`);
+            } else {
+                selectedElement.classList.add('bg-red-500/20', 'border-red-500');
+                document.querySelectorAll('.quiz-option')[question.correct].classList.add('bg-green-500/20', 'border-green-500');
+                showNotification('Not quite right.');
+            }
+            saveToStorage();
+            updateUserInfo();
+        }
+        
+        function nextQuestion() {
+            if (currentQuestionIndex < currentLesson.questions.length - 1) {
+                currentQuestionIndex++;
+                displayCurrentQuestion();
+            } else {
+                completeLesson();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayCurrentQuestion();
+            }
+        }
+
+        function completeLesson() {
+            hideModal('lessonModal');
+            awardBadge();
+            showNotification('Lesson completed! Great job! 🏆');
+            saveProgress();
+            renderAll();
+        }
+
+        function awardPoints(points) {
+            if (currentUser && currentUser.role === 'student' && userProgress[currentUser.email]) {
+                userProgress[currentUser.email].points = (userProgress[currentUser.email].points || 0) + (points || 0);
+                saveToStorage();
+                updateUserInfo();
+            }
+        }
+
+        function awardBadge() {
+            if (currentUser && currentUser.role === 'student' && userProgress[currentUser.email]) {
+                userProgress[currentUser.email].badges = (userProgress[currentUser.email].badges || 0) + 1;
+                saveToStorage();
+                updateUserInfo();
+            }
+        }
+        
+        function saveProgress() {
+            if (!currentUser || !userProgress[currentUser.email]) return;
+            const key = Object.keys(lessons).find(k => lessons[k].title === currentLesson.title);
+            if (key && !userProgress[currentUser.email].completedLessons.includes(key)) {
+                userProgress[currentUser.email].completedLessons.push(key);
+            }
+            userProgress[currentUser.email].lastActive = new Date().toISOString();
+            saveToStorage();
+            renderAll();
+        }
+
+        // --- Teacher: create lesson ---
+        function handleCreateLesson(e) {
+            e.preventDefault();
+            const title = document.getElementById('newLessonTitle').value.trim();
+            if (!title) return showNotification('Please enter lesson title');
+            const key = title.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+            const subject = document.getElementById('newLessonSubject').value;
+            const level = document.getElementById('newLessonLevel').value;
+            const q = document.getElementById('newLessonQ').value.trim();
+            const opts = document.getElementById('newLessonOptions').value.trim();
+            const correct = parseInt(document.getElementById('newLessonCorrectIndex').value);
+            const pts = parseInt(document.getElementById('newLessonPoints').value) || 0;
+            lessons[key] = {
+                title,
+                subject,
+                level,
+                questions: []
+            };
+            if (q && opts) {
+                lessons[key].questions.push({
+                    type: 'quiz',
+                    question: q,
+                    options: opts.split(',').map(s => s.trim()),
+                    correct: isNaN(correct) ? 0 : correct,
+                    points: pts
+                });
+                lessons[key].questions.push({
+                    type: 'story',
+                    content: 'Good job completing the question!',
+                    points: 5
+                });
+            }
+            saveToStorage();
+            showNotification('Lesson created');
+            renderAll();
+            document.getElementById('createLessonForm').reset();
+        }
+
+        // --- Teacher: students management ---
+        function showAddStudentPrompt() {
+            const name = prompt('New student name');
+            const email = prompt('Student email (will be used to login)');
+            if (!name || !email) return;
+            const e = email.trim().toLowerCase();
+            if (users[e]) return alert('Student already exists');
+            users[e] = {
+                name,
+                email: e,
+                role: 'student',
+                password: 'student'
+            };
+            userProgress[e] = {
+                points: 0,
+                badges: 0,
+                completedLessons: [],
+                lastActive: new Date().toISOString(),
+                games: { ...defaultGameState }
+            };
+            saveToStorage();
+            renderAll();
+            showNotification('Student added');
+        }
+
+        // --- Rendering helpers ---
+        function renderAll() {
+            if(!currentUser) return;
+            if (currentUser.role === 'student') {
+                renderLessonsGrid();
+                renderProgress();
+                renderAchievements();
+                renderLeaderboard();
+                renderGameUI(); // Render games UI
+            } else if (currentUser.role === 'teacher') {
+                renderStudentsTable();
+                renderRecentLessons();
+                renderTeacherOverview();
+            }
+        }
+
+        function renderLessonsGrid() {
+            const grid = document.getElementById('lessonsGrid');
+            if(!grid) return;
+            grid.innerHTML = '';
+            Object.keys(lessons).forEach(key => {
+                const l = lessons[key];
+                const node = document.createElement('div');
+                node.className = 'card-glass rounded-lg shadow-md p-6 card-hover cursor-pointer';
+                node.innerHTML = `<div class="text-4xl mb-4">📚</div><h3 class="text-xl font-semibold mb-2">${l.title}</h3><p class="text-gray-200 mb-4">${l.subject} • ${l.level}</p><div class="flex justify-between items-center"><span class="text-sm text-green-300 font-medium">${l.questions.length} items</span><span class="glass text-blue-200 px-2 py-1 rounded text-sm">${l.level}</span></div>`;
+                node.addEventListener('click', () => {
+                    openLesson(key);
+});
+                grid.appendChild(node);
+            });
+        }
+
+        function renderProgress() {
+            const list = document.getElementById('progressList');
+            if(!list || !currentUser || !userProgress[currentUser.email]) return;
+            list.innerHTML = '';
+            const up = userProgress[currentUser.email];
+            Object.keys(lessons).forEach(k => {
+                const l = lessons[k];
+                const completed = up.completedLessons && up.completedLessons.includes(k);
+                const percent = completed ? 100 : Math.floor((Math.random() * 60) + 20);
+                const item = document.createElement('div');
+                item.innerHTML = `<div class="flex justify-between mb-2"><span class="text-sm font-medium">${l.title}</span><span class="text-sm text-gray-200">${completed ? '100%' : percent + '%'}</span></div><div class="progress-glass w-full rounded-full h-2"><div class="progress-fill h-2 rounded-full" style="width: ${completed ? 100 : percent}%"></div></div>`;
+                list.appendChild(item);
+            });
+        }
+
+        function renderAchievements() {
+            const g = document.getElementById('achievementsGrid');
+            if(!g || !currentUser || !userProgress[currentUser.email]) return;
+            g.innerHTML = '';
+            const badges = userProgress[currentUser.email].badges;
+            for (let i = 0; i < Math.max(3, badges); i++) {
+                const el = document.createElement('div');
+                el.className = 'text-center p-3 glass rounded-lg';
+                el.innerHTML = `<div class="text-2xl mb-1">${i < badges ? '🥇' : '✨'}</div><div class="text-xs font-medium">${i < badges ? 'Earned' : 'Locked'}</div>`;
+                g.appendChild(el);
+            }
+        }
+
+        function renderLeaderboard() {
+            const list = document.getElementById('leaderboardList');
+            if(!list) return;
+            list.innerHTML = '';
+            const arr = Object.keys(userProgress).map(email => ({
+                email,
+                points: userProgress[email].points || 0,
+                name: (users[email] && users[email].name) || email
+            })).filter(u => users[u.email] && users[u.email].role === 'student');
+            arr.sort((a, b) => b.points - a.points);
+            arr.slice(0, 10).forEach((u, idx) => {
+                const el = document.createElement('div');
+                el.className = 'flex items-center justify-between p-3 ' + (currentUser.email === u.email ? 'glass-strong' : 'glass') + ' rounded-lg';
+                el.innerHTML = `<div class="flex items-center space-x-3"><span class="text-2xl">${idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}</span><div><div class="font-medium">${u.name}</div><div class="text-sm text-gray-200">${u.points} points</div></div></div><div class="font-bold">#${idx + 1}</div>`;
+                list.appendChild(el);
+            });
+        }
+
+        function renderStudentsTable() {
+            const body = document.getElementById('studentsTableBody');
+            if(!body) return;
+            body.innerHTML = '';
+            Object.keys(users).filter(e => users[e].role === 'student').forEach(e => {
+                const u = users[e];
+                const prog = userProgress[e] || {
+                    points: 0,
+                    completedLessons: [],
+                    lastActive: ''
+                };
+                const row = document.createElement('tr');
+                row.className = 'border-b border-white border-opacity-20 hover:bg-white hover:bg-opacity-5';
+                row.innerHTML = `<td class="py-3 px-4"><div class="flex items-center space-x-3"><div class="w-8 h-8 glass rounded-full flex items-center justify-center"><span class="text-sm font-medium">${u.name.charAt(0)}</span></div><span class="font-medium">${u.name}</span></div></td><td class="py-3 px-4"><div class="progress-glass w-full rounded-full h-2"><div class="bg-green-300 h-2 rounded-full" style="width: ${Math.min(100, (prog.completedLessons ? prog.completedLessons.length : 0) * 30)}%"></div></div><span class="text-sm text-gray-200">${prog.completedLessons ? prog.completedLessons.length : 0} lessons</span></td><td class="py-3 px-4 text-sm text-gray-200">${prog.lastActive ? new Date(prog.lastActive).toLocaleString() : '—'}</td><td class="py-3 px-4 font-medium">${prog.points || 0}</td><td class="py-3 px-4"><button class="text-purple-300 hover:text-purple-100 text-sm" onclick="viewStudent('${e}')">View Details</button></td>`;
+                body.appendChild(row);
+            });
+            document.getElementById('totalStudents').textContent = Object.keys(users).filter(e => users[e].role === 'student').length;
+        }
+
+        function viewStudent(email) {
+            const u = users[email];
+            alert(`${u.name} — points: ${userProgress[email]?.points || 0}\nCompleted: ${userProgress[email]?.completedLessons?.join(', ') || '-'}`);
+        }
+
+        function renderRecentLessons() {
+            const list = document.getElementById('recentLessonsList');
+            if(!list) return;
+            list.innerHTML = '';
+            Object.keys(lessons).slice(0, 10).forEach(k => {
+                const l = lessons[k];
+                const el = document.createElement('div');
+                el.className = 'flex items-center justify-between p-3 glass rounded-lg';
+                el.innerHTML = `<div><div class="font-medium">${l.title}</div><div class="text-sm text-gray-200">${l.subject} • ${l.level}</div></div><button class="text-purple-300 hover:text-purple-100 text-sm" onclick="editLesson('${k}')">Edit</button>`;
+                list.appendChild(el);
+            });
+        }
+
+        function editLesson(key) {
+            alert('Frontend edit is not implemented. But lesson key: ' + key);
+        }
+
+        function renderTeacherOverview() { // simple aggregates
+            const stud = Object.keys(users).filter(e => users[e].role === 'student');
+            const totalStud = stud.length;
+            document.getElementById('totalStudents').textContent = totalStud;
+            const allPoints = stud.reduce((s, e) => s + (userProgress[e]?.points || 0), 0);
+            document.getElementById('totalBadges').textContent = stud.reduce((s, e) => s + (userProgress[e]?.badges || 0), 0);
+            const avg = stud.length ? Math.round(allPoints / stud.length) : 0;
+            document.getElementById('avgScore').textContent = avg + '%';
+            document.getElementById('avgCompletion').textContent = Math.min(100, Math.round(stud.reduce((acc, e) => acc + ((userProgress[e]?.completedLessons?.length || 0)), 0) / (stud.length || 1) * 20)) + '%';
+            document.getElementById('activeToday').textContent = stud.filter(e => {
+                const d = userProgress[e]?.lastActive;
+                if (!d) return false;
+                const dt = new Date(d);
+                const now = new Date();
+                return dt.toDateString() === now.toDateString();
+            }).length;
+        }
+
+        // --- profile save ---
+        function saveProfile() {
+            if (!currentUser) return showNotification('Login to save profile');
+            const name = document.getElementById('profileName').value.trim();
+            const lang = document.getElementById('profileLanguage').value;
+            const low = document.getElementById('lowDataMode').checked;
+            users[currentUser.email].name = name || users[currentUser.email].name;
+            localStorage.setItem('sh_lang', lang);
+            localStorage.setItem('sh_lowdata', low ? '1' : '0');
+            saveToStorage();
+            currentUser.name = users[currentUser.email].name;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserInfo();
+            showNotification('Profile saved');
+            renderAll();
+        }
+
+        function saveTeacherSettings() {
+            if (!currentUser) return showNotification('Login as teacher');
+            const name = document.getElementById('teacherProfileName').value.trim();
+            const school = document.getElementById('teacherSchool').value.trim();
+            users[currentUser.email].name = name || users[currentUser.email].name;
+            localStorage.setItem('sh_teacher_school', school);
+            saveToStorage();
+            currentUser.name = users[currentUser.email].name;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserInfo();
+            showNotification('Settings saved');
+        }
+
+        // --- Offline status ---
+        function checkOfflineStatus() {
+            updateOfflineStatus(!navigator.onLine);
+        }
+
+        function updateOfflineStatus(offline) {
+            isOffline = offline;
+            const indicator = document.getElementById('offlineIndicator');
+            if (offline) indicator.classList.remove('hidden');
+            else indicator.classList.add('hidden');
+        }
+
+        // --- Misc ---
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            document.getElementById('notificationText').textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => notification.classList.add('hidden'), 3000);
+        }
+
+        function changeLanguage(e) {
+            const lang = e.target.value;
+            localStorage.setItem('sh_lang', lang);
+            applyLanguage();
+            showNotification('Language changed (UI text limited)');
+        }
+
+        function applyLanguage() {
+            const lang = localStorage.getItem('sh_lang') || 'en';
+            document.getElementById('heroTitle').textContent = translations[lang]?.welcome || translations['en'].welcome;
+            document.getElementById('loginBtn').textContent = translations[lang]?.login || 'Login';
+            document.getElementById('signupBtn').textContent = translations[lang]?.signup || 'Sign Up';
+            document.getElementById('languageSelect').value = lang;
+        }
+
+        // --- Theme Toggle ---
+        function setTheme(isDark) {
+            const themeToggleBtn = document.getElementById('themeToggle');
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                themeToggleBtn.innerHTML = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeToggleBtn.innerHTML = '☀️ Light Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                setTheme(true);
+            } else {
+                setTheme(false);
+            }
+        }
+
+        // initial apply
+        applyLanguage();
+
+        // expose openLesson to global for onclick usage
+        window.openLesson = openLesson;
+        window.viewStudent = viewStudent;
+        window.editLesson = editLesson;
+        
+        // ======================================================================
+        // --- GAME HUB LOGIC (MERGED AND ADAPTED) ---
+        // ======================================================================
+        let gameState = { ...defaultGameState };
+
+        function loadGameState() {
+            if (currentUser && userProgress[currentUser.email]) {
+                gameState = { ...defaultGameState, ...userProgress[currentUser.email].games };
+            }
+            renderGameUI();
+        }
+
+        function saveGameState() {
+            if (currentUser && userProgress[currentUser.email]) {
+                userProgress[currentUser.email].games = { ...gameState };
+                saveToStorage();
+            }
+            renderGameUI();
+        }
+        
+        function getGameState() {
+             if (currentUser && userProgress[currentUser.email]) {
+                 return { ...defaultGameState, ...userProgress[currentUser.email].games };
+             }
+             return { ...defaultGameState };
+        }
+
+        function levelFromPoints(pts) { return Math.floor(pts / 100) + 1; }
+        function levelProgress(pts) { const into = pts % 100; return Math.min(100, Math.round((into / 100) * 100)); }
+        function fmt(n) { return Number(n).toLocaleString(); }
+
+        function awardGamePoints(amount) {
+            gameState.points += amount;
+            setGameStreakOnEarn();
+
+            // This is the key integration: award points to the main platform profile
+            awardPoints(amount);
+
+            saveGameState();
+        }
+
+        function setGameStreakOnEarn() {
+            const today = new Date();
+            const last = gameState.lastPlayDate ? new Date(gameState.lastPlayDate) : null;
+            if (!last) {
+                gameState.streak = 1;
+            } else {
+                const diffDays = Math.floor((today - new Date(last.toDateString())) / (24 * 60 * 60 * 1000));
+                if (diffDays === 1) {
+                    gameState.streak += 1;
+                } else if (diffDays > 1) {
+                    gameState.streak = 1;
+                }
+            }
+            gameState.lastPlayDate = today.toISOString();
+        }
+
+        function awardGameBadge(key) {
+            if (!gameState.badges[key]) {
+                gameState.badges[key] = true;
+                showNotification(`Game Badge Unlocked: ${key.charAt(0).toUpperCase() + key.slice(1)}!`);
+                saveGameState();
+            }
+        }
+
+        function renderGameBadges() {
+            const defs = [
+                { key: 'math', label: 'Math Whiz', icon: '➗' },
+                { key: 'science', label: 'Science Star', icon: '🧪' },
+                { key: 'words', label: 'Word Smith', icon: '🔤' },
+            ];
+            const badgesContainer = document.getElementById('gameBadges');
+            if(!badgesContainer) return;
+            badgesContainer.innerHTML = '';
+            
+            const state = getGameState();
+            
+            defs.forEach(b => {
+                const isUnlocked = state.badges[b.key];
+                const wrap = document.createElement('div');
+                wrap.className = `glass rounded-xl p-3 flex flex-col items-center text-center gap-2 ${!isUnlocked ? 'opacity-60 grayscale' : ''}`;
+                wrap.innerHTML = `
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center">
+                        <span class="text-2xl">${b.icon}</span>
+                    </div>
+                    <div class="text-xs ${isUnlocked ? '' : 'text-gray-300'}">${b.label}</div>`;
+                badgesContainer.appendChild(wrap);
+            });
+        }
+        
+        function renderGameUI() {
+            if (!currentUser || currentUser.role !== 'student' || !document.getElementById('gamesTab')) return;
+
+            const state = getGameState();
+            
+            // Profile bits
+            document.getElementById('gamePoints').textContent = fmt(state.points);
+            const lvl = levelFromPoints(state.points);
+            document.getElementById('gameLevel').textContent = lvl;
+            document.getElementById('gameLevelProgressBar').style.width = levelProgress(state.points) + '%';
+            document.getElementById('gameLevelProgressText').textContent = levelProgress(state.points) + '%';
+            document.getElementById('gameStreak').textContent = state.streak;
+
+            // Progress bars per game
+            document.getElementById('mathProgress').style.width = (state.completed.math ? '100%' : state.best.math > 0 ? '60%' : '0%');
+            document.getElementById('scienceProgress').style.width = (state.completed.science ? '100%' : state.best.science > 0 ? '50%' : '0%');
+            document.getElementById('wordProgress').style.width = (state.completed.words ? '100%' : state.best.words > 0 ? '40%' : '0%');
+
+            document.getElementById('mathBest').textContent = `${fmt(state.best.math)}`;
+            document.getElementById('scienceBest').textContent = `${fmt(state.best.science)}`;
+            document.getElementById('wordBest').textContent = `${fmt(state.best.words)}`;
+            
+            renderGameBadges();
+        }
+        
+        // --- Game Panel Logic ---
+        function openGamePanel(id){
+             document.getElementById(`panel-${id}`).classList.remove('hidden');
+             document.getElementById('game-cards').classList.add('hidden');
+        }
+        function closeGamePanel(id){
+             document.getElementById(`panel-${id}`).classList.add('hidden');
+             document.getElementById('game-cards').classList.remove('hidden');
+        }
+        
+        function initializeGames() {
+            loadGameState();
+            
+             // Open/Close Panels
+            document.querySelectorAll('.game-start-btn').forEach(btn=>{
+              btn.addEventListener('click', ()=>{
+                const id = btn.getAttribute('data-open');
+                openGamePanel(id);
+              });
+            });
+            document.querySelectorAll('.game-close-panel').forEach(btn=>{
+              btn.addEventListener('click', ()=>{
+                const id = btn.getAttribute('data-close');
+                closeGamePanel(id);
+              });
+            });
+            
+            // GAME 1: Math Blitz
+            const math = { timer: null, timeLeft: 30, qIndex: 0, total: 5, score: 0, current: null };
+            const mathQ = document.getElementById('mathQuestion');
+            const mathChoices = document.getElementById('mathChoices');
+            const mathTimer = document.getElementById('mathTimer');
+            const mathScore = document.getElementById('mathScore');
+            const mathQIndex = document.getElementById('mathQIndex');
+            const mathFeedback = document.getElementById('mathFeedback');
+            document.getElementById('mathStart').addEventListener('click', startMath);
+
+            function randInt(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+            
+            function genQuestion() {
+                const types = ['+', '-', '×', '÷'];
+                const t = types[randInt(0, types.length - 1)];
+                let a = randInt(4, 24), b = randInt(3, 12);
+                if (t === '-') { if (b > a)[a, b] = [b, a]; }
+                if (t === '÷') { const prod = a * b; a = prod; }
+                const expr = t === '×' ? `${a} × ${b}` : t === '÷' ? `${a} ÷ ${b}` : `${a} ${t} ${b}`;
+                let ans;
+                switch (t) { case '+': ans = a + b; break; case '-': ans = a - b; break; case '×': ans = a * b; break; case '÷': ans = a / b; break; }
+                const opts = new Set([ans]);
+                while (opts.size < 4) {
+                    const delta = randInt(-6, 6) || 1;
+                    opts.add(ans + delta);
+                }
+                const shuffled = Array.from(opts).sort(() => Math.random() - 0.5);
+                return { expr, ans, opts: shuffled };
+            }
+
+            function startMath() {
+                math.timeLeft = 30; math.qIndex = 0; math.score = 0;
+                mathFeedback.textContent = '';
+                nextMath();
+                math.timer && clearInterval(math.timer);
+                math.timer = setInterval(() => {
+                    math.timeLeft--; mathTimer.textContent = math.timeLeft;
+                    if (math.timeLeft <= 0) endMath();
+                }, 1000);
+            }
+            
+            function nextMath() {
+                if (math.qIndex >= math.total) return endMath();
+                math.current = genQuestion();
+                mathQ.textContent = math.current.expr;
+                mathQIndex.textContent = `${math.qIndex + 1}/${math.total}`;
+                mathScore.textContent = math.score;
+                mathChoices.innerHTML = '';
+                math.current.opts.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-glass text-white rounded-xl px-3 py-2 text-left';
+                    btn.textContent = opt;
+                    btn.addEventListener('click', () => {
+                        if (opt === math.current.ans) {
+                            math.score += 20;
+                            mathFeedback.textContent = 'Correct! +20';
+                            mathFeedback.className = 'text-sm text-green-300';
+                        } else {
+                            mathFeedback.textContent = 'Try again!';
+                            mathFeedback.className = 'text-sm text-yellow-300';
+                        }
+                        math.qIndex++;
+                        setTimeout(nextMath, 300);
+                        mathScore.textContent = math.score;
+                    });
+                    mathChoices.appendChild(btn);
+                });
+            }
+            function endMath() {
+                clearInterval(math.timer);
+                math.timer = null;
+                mathTimer.textContent = 0;
+                const earned = Math.max(10, Math.min(100, Math.round(math.score * 0.6)));
+                gameState.best.math = Math.max(gameState.best.math, math.score);
+                gameState.completed.math = true;
+                awardGamePoints(earned);
+                awardGameBadge('math');
+                showNotification(`Math Blitz complete! You earned ${earned} platform points.`);
+            }
+            
+            // GAME 2: Science Sort
+            const scienceData = [ { id: 'iron', label: 'Iron', correct: 'Solid' }, { id: 'ice', label: 'Ice', correct: 'Solid' }, { id: 'water', label: 'Water', correct: 'Liquid' }, { id: 'juice', label: 'Juice', correct: 'Liquid' }, { id: 'oxygen', label: 'Oxygen', correct: 'Gas' }, { id: 'steam', label: 'Steam', correct: 'Gas' }, ];
+            const itemsWrap = document.getElementById('scienceItems');
+            const zones = { Solid: document.querySelector('[data-dropzone="Solid"]'), Liquid: document.querySelector('[data-dropzone="Liquid"]'), Gas: document.querySelector('[data-dropzone="Gas"]'), };
+            const scienceFeedback = document.getElementById('scienceFeedback');
+
+            function createChip(item) {
+                const el = document.createElement('div');
+                el.className = 'draggable select-none cursor-move rounded-full px-3 py-1 bg-white/10 border border-white/20';
+                el.draggable = true;
+                el.textContent = item.label;
+                el.dataset.id = item.id;
+                el.dataset.correct = item.correct;
+                el.addEventListener('dragstart', e => {
+                    e.dataTransfer.setData('text/plain', JSON.stringify({ id: item.id, label: item.label, correct: item.correct }));
+                    setTimeout(() => { el.style.opacity = .5; }, 0);
+                });
+                el.addEventListener('dragend', () => { el.style.opacity = 1; });
+                return el;
+            }
+            
+            function populateScience() {
+                if(!itemsWrap) return;
+                itemsWrap.innerHTML = '';
+                Object.values(zones).forEach(z => z.innerHTML = '');
+                scienceData.sort(() => Math.random() - 0.5).forEach(item => {
+                    itemsWrap.appendChild(createChip(item));
+                });
+            }
+
+            document.querySelectorAll('.droppable').forEach(zone => {
+                zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('active'); });
+                zone.addEventListener('dragleave', () => zone.classList.remove('active'));
+                zone.addEventListener('drop', e => {
+                    e.preventDefault();
+                    zone.classList.remove('active');
+                    const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                    const chip = createChip(data);
+                    const orig = document.querySelector(`[data-id="${data.id}"]`);
+                    if (orig) orig.remove();
+                    zone.querySelector('[data-dropzone]')?.appendChild(chip);
+                });
+            });
+            
+            document.getElementById('scienceCheck').addEventListener('click', () => {
+                let correct = 0, total = scienceData.length;
+                Object.keys(zones).forEach(bucket => {
+                    zones[bucket].querySelectorAll('.draggable').forEach(chip => {
+                        if (chip.dataset.correct === bucket) correct++;
+                    });
+                });
+                const score = Math.round((correct / total) * 100);
+                scienceFeedback.textContent = `${correct}/${total} correct — ${score}%`;
+                scienceFeedback.className = 'text-sm ' + (score === 100 ? 'text-green-300' : score >= 60 ? 'text-yellow-300' : 'text-red-500');
+
+                if (correct === total) {
+                    const earned = 80;
+                    gameState.best.science = Math.max(gameState.best.science, score);
+                    gameState.completed.science = true;
+                    awardGamePoints(earned);
+                    awardGameBadge('science');
+                    showNotification(`Great sorting! You earned ${earned} platform points.`);
+                }
+            });
+            document.getElementById('scienceReset').addEventListener('click', populateScience);
+            
+            // GAME 3: Word Forge
+            const wordsRounds = [{ word: 'ION', hint: 'Charged particle' }, { word: 'GRAPH', hint: 'Visual representation' }, { word: 'THEOREM', hint: 'Proven statement' }];
+            const w = { idx: 0, score: 0, pick: [] };
+            const elWordRound = document.getElementById('wordRound');
+            const elWordScore = document.getElementById('wordScore');
+            const elWordHint = document.getElementById('wordHint');
+            const elWordTarget = document.getElementById('wordTarget');
+            const elWordLetters = document.getElementById('wordLetters');
+            const elWordFeedback = document.getElementById('wordFeedback');
+            
+            function shuffle(arr) { return arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]); }
+
+            function loadWordRound() {
+                if(!elWordRound) return;
+                const round = wordsRounds[w.idx];
+                elWordRound.textContent = `${w.idx + 1}/${wordsRounds.length}`;
+                elWordScore.textContent = w.score;
+                elWordHint.textContent = round.hint;
+                w.pick = [];
+                updateTarget(round.word);
+                renderLetters(round.word);
+            }
+            
+            function updateTarget(word) {
+                if (w.pick.length === 0) { elWordTarget.textContent = word.split('').map(() => '_').join(' '); } 
+                else { const filled = w.pick.join('') + '_'.repeat(word.length - w.pick.length); elWordTarget.textContent = filled.split('').join(' '); }
+            }
+            
+            function renderLetters(word) {
+                elWordLetters.innerHTML = '';
+                shuffle(word.split('')).forEach((ch, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-glass text-white rounded-lg px-3 py-2 text-xl';
+                    btn.textContent = ch;
+                    btn.addEventListener('click', () => {
+                        if (w.pick.length < word.length) {
+                            w.pick.push(ch);
+                            btn.disabled = true;
+                            btn.classList.add('opacity-50');
+                            updateTarget(word);
+                        }
+                    });
+                    elWordLetters.appendChild(btn);
+                });
+            }
+
+            document.getElementById('wordShuffle').addEventListener('click', () => { const word = wordsRounds[w.idx].word; renderLetters(word); });
+            document.getElementById('wordClear').addEventListener('click', () => { const word = wordsRounds[w.idx].word; w.pick = []; updateTarget(word); renderLetters(word); elWordFeedback.textContent = ''; });
+            document.getElementById('wordSubmit').addEventListener('click', () => {
+                const target = wordsRounds[w.idx].word;
+                const guess = w.pick.join('');
+                if (guess === target) {
+                    elWordFeedback.textContent = 'Correct! +30';
+                    elWordFeedback.className = 'text-sm text-green-300';
+                    w.score += 30;
+                    if (w.idx < wordsRounds.length - 1) {
+                        w.idx++;
+                        setTimeout(() => { elWordFeedback.textContent = ''; loadWordRound(); }, 400);
+                    } else {
+                        const earned = Math.max(50, Math.min(100, w.score));
+                        gameState.best.words = Math.max(gameState.best.words, w.score);
+                        gameState.completed.words = true;
+                        awardGamePoints(earned);
+                        awardGameBadge('words');
+                        showNotification(`Word Forge complete! You earned ${earned} platform points.`);
+                        w.idx = 0; w.score = 0;
+                        setTimeout(() => loadWordRound(), 1000);
+                    }
+                } else {
+                    elWordFeedback.textContent = 'Not quite, try again.';
+                    elWordFeedback.className = 'text-sm text-yellow-300';
+                }
+            });
+            
+            populateScience();
+            loadWordRound();
+        }
+
+    </script>
+</body>
+
+</html>
